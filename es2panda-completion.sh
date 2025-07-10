@@ -1,5 +1,8 @@
 #!/bin/bash
 
+function es2panda(){
+}
+
 _es2panda_completions() {
     # ':' karakterini kelime ayırıcılar listesinden çıkar
     COMP_WORDBREAKS=${COMP_WORDBREAKS//:/}
@@ -7,7 +10,7 @@ _es2panda_completions() {
     local cur
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    local yaml_file="/home/hw-intern2/arkcompiler/ets_frontend/ets2panda/util/options.yaml"
+    local yaml_file="/home/ewx1438531/arkcompiler/ets_frontend/ets2panda/util/options.yaml"
 
     # Eğer --option:sub kısmındaysa
     if [[ "$cur" == --*:* ]]; then
