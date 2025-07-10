@@ -1,7 +1,7 @@
 #!/bin/bash
 
 _es2panda_completions() {
-    # ':' karakterini kelime ayırıcılar listesinden çıkar
+    # ':' karakterinii kelime ayırıcılar listesinden çıkar
     COMP_WORDBREAKS=${COMP_WORDBREAKS//:/}
 
     local cur
