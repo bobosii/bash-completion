@@ -8,10 +8,17 @@ Bunu da her shell icin ayri bash komutlari yazarak her biri icin ayri olarak bul
 
 
 ## 1. zsh icin olan path.
-/usr/share/zsh/functions/Completion/Unix zsh terminali icin olan completionlarin pathi
+/usr/share/zsh/functions/Completion/Unix
+
+Ornek dosya uzantili path:
+/usr/share/functions/Completion/Unix/_es2panda
 
 ## 2. Bash icin olan path
 /usr/share/bash-completions/completions/
+
+Ornek dosya uzantili path:
+/usr/share/bash-completion/completions/_es2panda
+
 
 ## 3. Fish icin olan.
 ~/.config/fish/completions/es2panda.fish
