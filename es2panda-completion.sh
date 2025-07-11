@@ -1,8 +1,4 @@
 #!/bin/bash
-
-function es2panda(){
-}
-
 _es2panda_completions() {
     # ':' karakterini kelime ayırıcılar listesinden çıkar
     COMP_WORDBREAKS=${COMP_WORDBREAKS//:/}

@@ -1,8 +1,4 @@
 #!/bin/bash
-
-function ark(){
-}
-
 _ark_completions() {
     COMP_WORDBREAKS=${COMP_WORDBREAKS//:/}
 

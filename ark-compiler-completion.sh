@@ -1,9 +1,5 @@
 #!/bin/bash
-
-function ark(){
-}
-
-_ark_completion() {
+_ark_compiler_completion() {
     # ',' karakterini kelime ayırıcılar listesinden çıkar
     COMP_WORDBREAKS=${COMP_WORDBREAKS//,/}
 
@@ -35,5 +31,5 @@ _ark_completion() {
     COMPREPLY=($(compgen -W "${opts}" -- "$cur"))
 }
 
-complete -F _ark_completion ark
+complete -F _ark_compiler_completion ark
 
