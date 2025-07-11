@@ -1,21 +1,21 @@
 #!/bin/bash
 
-function ark-compiler(){
+function ark(){
 }
 
-_ark_compiler_completion() {
-    # ',' karakterini kelime ayırıcılar listesinden çıkar
-    COMP_WORDBREAKS=${COMP_WORDBREAKS//,/}
+_ark_completion() {
+    # ':' karakterini kelime ayırıcılar listesinden çıkar
+    COMP_WORDBREAKS=${COMP_WORDBREAKS//:/}
 
     local cur
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    local yaml_file="/home/ewx1438531/arkcompiler/build/compiler_options_gen.yaml"
+    local yaml_file="/home/ewx1438531/arkcompiler/build/runtime_options_gen.yaml"
 
-    # Eğer --option,sub kısmındaysa
-    if [[ "$cur" == --*,* ]]; then
-        local mainopt="${cur%%,*}"
-        local partial_subopt="${cur#*,}"
+    # Eğer --option:sub kısmındaysa
+    if [[ "$cur" == --*:* ]]; then
+        local mainopt="${cur%%:*}"
+        local partial_subopt="${cur#*:}"
         local mainopt_clean="${mainopt#--}"
 
         # sub_option'ları yaml'den çek
@@ -23,7 +23,7 @@ _ark_compiler_completion() {
 
         local suggestions=()
         for sub in $subopts; do
-            suggestions+=("${mainopt},${sub}")
+            suggestions+=("${mainopt}:${sub}")
         done
 
         COMPREPLY=($(compgen -W "${suggestions[*]}" -- "$cur"))
@@ -33,7 +33,8 @@ _ark_compiler_completion() {
     # Normal ana optionları çek
     local opts=$(yq '.options[].name' "$yaml_file" | sed 's/^/--/')
     COMPREPLY=($(compgen -W "${opts}" -- "$cur"))
+    COMP_WORDBREAKS=${COMP_WORDBREAKS//:/}
+
 }
 
-complete -F _ark_compiler_completion ark-compiler
-
+complete -F _ark_completion ark
