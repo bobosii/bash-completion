@@ -1,0 +1,32 @@
+#compdef es2panda
+
+zstyle ':completion:*' word-chars " /;@=$"
+
+_es2panda() {
+  local cur="$words[CURRENT]"
+  local yaml_file="$HOME/arkcompiler/ets_frontend/ets2panda/util/options.yaml"
+  local -a suggestions
+
+  if [[ "$cur" == --*:* ]]; then
+    local mainopt="${cur%%:*}"
+    local partial_subopt="${cur#*:}"
+    local mainopt_clean="${mainopt#--}"
+
+    local subopts
+    subopts=("${(@f)$(yq -r '.options[] | select(.name == "'${mainopt_clean}'") | .sub_options[]?.name' "$yaml_file" 2>/dev/null)}")
+
+    suggestions=()
+    for sub in $subopts; do
+      suggestions+=("${mainopt}:${sub}")
+    done
+
+    compadd -Q -a suggestions
+    return
+  fi
+
+  local opts
+  opts=("${(@f)$(yq -r '.options[].name' "$yaml_file" | sed 's/^/--/')}")
+
+  compadd -Q -a opts
+}
+

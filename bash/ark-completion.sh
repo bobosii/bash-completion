@@ -5,7 +5,7 @@ _ark_completions() {
     local cur
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    local yaml_file="/home/ewx1438531/arkcompiler/build/runtime_options_gen.yaml"
+    local yaml_file="$HOME/arkcompiler/build/runtime_options_gen.yaml"
 
     if [[ "$cur" == --*:* ]]; then
         local mainopt="${cur%%:*}"
