@@ -35,75 +35,86 @@ if ! command -v complete &> /dev/null; then
     fi
 fi
 
+# Check for yq
+if ! command -v yq &> /dev/null; then
+    echo "⚠️ 'yq' is required but not found."
+    read -rp "Do you want to install 'yq'? [y/n]: " INSTALL_YQ
+    if [[ "$INSTALL_YQ" == "y" || "$INSTALL_YQ" == "Y" ]]; then
+        sudo apt update
+        sudo apt install yq -y
+    else
+        echo "❌ 'yq' is required for completion scripts. Exiting."
+        exit 1
+    fi
+fi
+
 # Clone repo
 echo "📥 Cloning completion script from repository..."
 rm -rf "$CLONE_DIR"
 git clone "$REPO_URL" "$CLONE_DIR"
 
-### -------- Install es2panda completion -------- ###
-echo "📂 Installing es2panda completion script..."
-
-if [ "$USER_SHELL" = "bash" ]; then
-    FILE="$CLONE_DIR/bash/es2panda-completion.sh"
-    DEST="/usr/share/bash-completion/completions/_es2panda"
-elif [ "$USER_SHELL" = "zsh" ]; then
-    FILE="$CLONE_DIR/zsh/_es2panda"
-    DEST="/usr/share/functions/Completion/Unix/_es2panda"
-elif [ "$USER_SHELL" = "fish" ]; then
-    FILE="$CLONE_DIR/bash/es2panda-completion.sh"
-    mkdir -p ~/.config/fish/completions
-    DEST="$HOME/.config/fish/completions/es2panda.fish"
-else
+### -------- Set file paths & destinations -------- ###
+case "$USER_SHELL" in
+  bash)
+    ES2PANDA_FILE="$CLONE_DIR/bash/_es2panda"
+    ES2PANDA_DEST="/usr/share/bash-completion/completions/_es2panda"
+    ARK_FILE="$CLONE_DIR/bash/_ark"
+    ARK_DEST="/usr/share/bash-completion/completions/_ark"
+    ARK_DISASM_FILE="$CLONE_DIR/bash/_ark_disasm"
+    ARK_DISASM_DEST="/usr/share/bash-completion/completions/_ark_disasm"
+    ;;
+  zsh)
+    ES2PANDA_FILE="$CLONE_DIR/zsh/_es2panda"
+    ES2PANDA_DEST="/usr/share/zsh/functions/Completion/Unix/_es2panda"
+    ARK_FILE="$CLONE_DIR/zsh/_ark"
+    ARK_DEST="/usr/share/zsh/functions/Completion/Unix/_ark"
+    ARK_DISASM_FILE="$CLONE_DIR/zsh/_ark_disasm"
+    ARK_DISASM_DEST="/usr/share/zsh/functions/Completion/Unix/_ark_disasm"
+    ;;
+  fish)
+    if [ ! -d "$HOME/.config/fish/completions" ]; then
+      mkdir -p "$HOME/.config/fish/completions"
+    fi
+    ES2PANDA_FILE="$CLONE_DIR/fish/es2panda.fish"
+    ES2PANDA_DEST="$HOME/.config/fish/completions/es2panda.fish"
+    ARK_FILE="$CLONE_DIR/fish/ark.fish"
+    ARK_DEST="$HOME/.config/fish/completions/ark.fish"
+    ARK_DISASM_FILE="$CLONE_DIR/fish/ark_disasm.fish"
+    ARK_DISASM_DEST="$HOME/.config/fish/completions/ark_disasm.fish"
+    ;;
+  *)
     echo "❌ Unsupported shell: $USER_SHELL"
     exit 1
-fi
+    ;;
+esac
 
-# Update YAML path in es2panda file
-YAML_PATH="$HOME/arkcompiler/ets_frontend/ets2panda/util/options.yaml"
-if [ -f "$YAML_PATH" ]; then
-    sed -i "s|local yaml_file=.*|local yaml_file=\"$YAML_PATH\"|g" "$FILE"
-else
+### -------- Install es2panda completion -------- ###
+if [ -f "$ES2PANDA_FILE" ]; then
+  YAML_PATH="$HOME/arkcompiler/ets_frontend/ets2panda/util/options.yaml"
+  if [ -f "$YAML_PATH" ]; then
+    sed -i "s|local yaml_file=.*|local yaml_file=\"$YAML_PATH\"|g" "$ES2PANDA_FILE"
+  else
     echo "⚠️ Default es2panda options.yaml not found. Please update manually if needed."
+  fi
+  sudo cp "$ES2PANDA_FILE" "$ES2PANDA_DEST"
 fi
-
-sudo cp "$FILE" "$DEST"
 
 ### -------- Install ark completion -------- ###
-echo "📂 Installing ark completion script..."
-
-if [ "$USER_SHELL" = "bash" ]; then
-    FILE="$CLONE_DIR/bash/ark-completion.sh"
-    DEST="/usr/share/bash-completion/completions/_ark"
-elif [ "$USER_SHELL" = "zsh" ]; then
-    FILE="$CLONE_DIR/zsh/_ark"
-    DEST="/usr/share/functions/Completion/Unix/_ark"
-fi
-
-# Update YAML path
-ARK_YAML="$HOME/arkcompiler/build/runtime_options_gen.yaml"
-if [ -f "$ARK_YAML" ]; then
-    sed -i "s|local yaml_file=.*|local yaml_file=\"$ARK_YAML\"|g" "$FILE"
-else
+if [ -f "$ARK_FILE" ]; then
+  ARK_YAML="$HOME/arkcompiler/build/runtime_options_gen.yaml"
+  if [ -f "$ARK_YAML" ]; then
+    sed -i "s|local yaml_file=.*|local yaml_file=\"$ARK_YAML\"|g" "$ARK_FILE"
+  else
     echo "⚠️ runtime_options_gen.yaml not found for ark. Please update manually if needed."
+  fi
+  sudo cp "$ARK_FILE" "$ARK_DEST"
 fi
-
-sudo cp "$FILE" "$DEST"
 
 ### -------- Install ark_disasm completion -------- ###
-echo "📂 Installing ark_disasm completion script..."
-
-if [ "$USER_SHELL" = "bash" ]; then
-    FILE="$CLONE_DIR/bash/ark_disasm_completion.sh"
-    DEST="/usr/share/bash-completion/completions/_ark_disasm"
-elif [ "$USER_SHELL" = "zsh" ]; then
-    FILE="$CLONE_DIR/zsh/_ark_disasm"
-    DEST="/usr/share/functions/Completion/Unix/_ark_disasm"
-fi
-
-if [ -f "$FILE" ]; then
-    sudo cp "$FILE" "$DEST"
+if [ -f "$ARK_DISASM_FILE" ]; then
+  sudo cp "$ARK_DISASM_FILE" "$ARK_DISASM_DEST"
 else
-    echo "⚠️ ark_disasm completion script not found!"
+  echo "⚠️ ark_disasm completion script not found!"
 fi
 
 ### -------- Add PATH if not exists -------- ###
