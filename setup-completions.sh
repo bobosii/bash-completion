@@ -40,13 +40,20 @@ if ! command -v yq &> /dev/null; then
     echo "⚠️ 'yq' is required but not found."
     read -rp "Do you want to install 'yq'? [y/n]: " INSTALL_YQ
     if [[ "$INSTALL_YQ" == "y" || "$INSTALL_YQ" == "Y" ]]; then
-        sudo apt update
-        sudo apt install yq -y
+        if command -v snap &> /dev/null; then
+            echo "📦 Installing 'yq' via snap..."
+            sudo snap install yq
+        else
+            echo "📦 Installing 'yq' via apt..."
+            sudo apt update
+            sudo apt install -y yq
+        fi
     else
         echo "❌ 'yq' is required for completion scripts. Exiting."
         exit 1
     fi
 fi
+
 
 # Clone repo
 echo "📥 Cloning completion script from repository..."
