@@ -1,1 +1,0 @@
-es2panda-bash-completion
