@@ -19,15 +19,14 @@ _ark_disasm_completions()
         return 0
     fi
 
-    # -- ile başlayan seçenek tamamlama
+    # Complete opts start with --
     if [[ "${cur}" == --* ]]; then
         COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
         return 0
     fi
 
-    # Dosya tamamlama (argüman olarak)
+    # Complete folder (arg)
     COMPREPLY=( $(compgen -f -- "${cur}") )
 }
 
-# Bu fonksiyonu ark_disasm komutuna bağla
 complete -F _ark_disasm_completions ark_disasm

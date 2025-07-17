@@ -1,14 +1,13 @@
 #!/bin/bash
 _es2panda_completions() {
-    # ':' karakterini kelime ayırıcılar listesinden çıkar
     COMP_WORDBREAKS=${COMP_WORDBREAKS//:/}
 
     local cur
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    local yaml_file="/home/ewx1438531/arkcompiler/ets_frontend/ets2panda/util/options.yaml"
+    local yaml_file="$HOME/arkcompiler/ets_frontend/ets2panda/util/options.yaml"
 
-    # Eğer --option:sub kısmındaysa
+    # If option is in :sub_option
     if [[ "$cur" == --*:* ]]; then
         local mainopt="${cur%%:*}"
         local partial_subopt="${cur#*:}"
@@ -26,7 +25,7 @@ _es2panda_completions() {
         return 0
     fi
 
-    # Normal ana optionları çek
+    # Get main options
     local opts=$(yq '.options[].name' "$yaml_file" | sed 's/^/--/')
     COMPREPLY=($(compgen -W "${opts}" -- "$cur"))
 }
