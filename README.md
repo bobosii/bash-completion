@@ -189,13 +189,3 @@ To test a completion script locally without installing globally, source it manua
   source fish/es2panda.fish
   ```
 
-
-## 📬 Contribution
-
-Feel free to open a PR or issue if:
-
-* You find a bug in the dynamic completion logic.
-* You want to improve compatibility for another shell.
-* You have a feature request for specific `es2panda` or `ark` sub-options.
-
-
