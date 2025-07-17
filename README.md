@@ -32,8 +32,8 @@ cd bash-completion
 Then run the provided installation script:
 
 ```bash
-chmod +x install.sh
-./install.sh
+chmod +x setup-completions.sh
+./setup-completions.sh
 ```
 
 This will:
