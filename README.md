@@ -1,4 +1,4 @@
-# Bash Completion Scripts for es2panda / ark / ark\_disasm
+# Bash Completion Scripts
 
 This repository provides shell completion scripts for the following CLI tools used in the ArkCompiler project:
 
