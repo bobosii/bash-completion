@@ -2,7 +2,7 @@
 
 set -e
 
-REPO_URL="https://gitee.com/nurullahahmetarikan/bash-completion.git"
+REPO_URL="https://github.com/bobosii/bash-completion.git"
 CLONE_DIR="$HOME/.es2panda-completion-tmp"
 
 echo "🔍 Detecting your shell..."
