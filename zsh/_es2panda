@@ -1,32 +1,24 @@
 #compdef es2panda
 
-zstyle ':completion:*' word-chars " /;@=$"
-
 _es2panda() {
-  local cur="$words[CURRENT]"
-  local yaml_file="$HOME/arkcompiler/ets_frontend/ets2panda/util/options.yaml"
-  local -a suggestions
+  local cur
+  cur=${words[CURRENT]}
 
-  if [[ "$cur" == --*:* ]]; then
+  if [[ $cur == --*: ]]; then
     local mainopt="${cur%%:*}"
-    local partial_subopt="${cur#*:}"
-    local mainopt_clean="${mainopt#--}"
-
-    local subopts
-    subopts=("${(@f)$(yq -r '.options[] | select(.name == "'${mainopt_clean}'") | .sub_options[]?.name' "$yaml_file" 2>/dev/null)}")
-
-    suggestions=()
-    for sub in $subopts; do
-      suggestions+=("${mainopt}:${sub}")
+    local subopts=()
+    [[ $mainopt == --ets-warnings ]] && subopts=(disable enable werror)
+    [[ $mainopt == --debugger-eval ]] && subopts=(line panda-files source)
+    [[ $mainopt == --generate-decl ]] && subopts=(enabled path)
+    [[ $mainopt == --ast-verifier ]] && subopts=(errors full-program json json-path phases warnings)
+    for s in $subopts; do
+      compadd -- "$mainopt:$s"
     done
-
-    compadd -Q -a suggestions
     return
   fi
-
   local opts
-  opts=("${(@f)$(yq -r '.options[].name' "$yaml_file" | sed 's/^/--/')}")
-
+  opts=(--es2panda --help --arktsconfig --extension --module --parse-only --dump-ast --dump-cfg --dump-dynamic-ast --dump-ast-only-silent --list-files --parse-jsdoc --dump-assembly --debug-info --dump-debug-info --opt-level --ets-module --eval-mode --ets-warnings --werror --enable --disable --debugger-eval --line --source --panda-files --generate-decl --enabled --path --emit-declaration --thread --dump-size-stat --output --log-level --stdlib --gen-stdlib --plugins --skip-phases --ast-verifier --warnings --errors --phases --full-program --json --json-path --list-phases --ets-unnamed --ets-path --exit-before-phase --exit-after-phase --dump-before-phases --dump-after-phases --dump-ets-src-before-phases --dump-ets-src-after-phases --bco-optimizer --bco-compiler --perm-arena --dump-perf-metrics --simultaneous)
   compadd -Q -a opts
 }
 
+compdef _es2panda es2panda

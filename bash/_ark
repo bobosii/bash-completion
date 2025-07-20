@@ -1,31 +1,198 @@
-#!/bin/bash
 _ark_completions() {
     COMP_WORDBREAKS=${COMP_WORDBREAKS//:/}
 
     local cur
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    local yaml_file="$HOME/arkcompiler/build/runtime_options_gen.yaml"
 
+    # Completion for suboptions
     if [[ "$cur" == --*:* ]]; then
-        local mainopt="${cur%%:*}"
-        local partial_subopt="${cur#*:}"
-        local mainopt_clean="${mainopt#--}"
-
-        # sub_option'ları yaml'den çek
-        local subopts=$(yq ".options[] | select(.name == \"${mainopt_clean}\") | .sub_options[].name" "$yaml_file" 2>/dev/null)
-
-        local suggestions=()
-        for sub in $subopts; do
-            suggestions+=("${mainopt}:${sub}")
-        done
-
-        COMPREPLY=($(compgen -W "${suggestions[*]}" -- "$cur"))
+        local opt="${cur%%:*}"
+        local suggestions=""
+        case "$opt" in
+        --runtime) suggestions="";;
+        --boot-panda-files) suggestions="";;
+        --panda-files) suggestions="";;
+        --boot-intrinsic-spaces) suggestions="";;
+        --boot-class-spaces) suggestions="";;
+        --runtime-type) suggestions="";;
+        --load-runtimes) suggestions="";;
+        --runtime-compressed-strings-enabled) suggestions="";;
+        --explicit-concurrent-gc-enabled) suggestions="";;
+        --run-gc-in-place) suggestions="";;
+        --full-gc-bombing-frequency) suggestions="";;
+        --run-gc-every-safepoint) suggestions="";;
+        --compiler-enable-jit) suggestions="";;
+        --compiler-hotness-threshold) suggestions="";;
+        --compiler-profiling-threshold) suggestions="";;
+        --compiler-enable-osr) suggestions="";;
+        --debugger-library-path) suggestions="";;
+        --debugger-enable) suggestions="";;
+        --sampling-profiler-create) suggestions="";;
+        --sampling-profiler-startup-run) suggestions="";;
+        --sampling-profiler-interval) suggestions="";;
+        --sampling-profiler-output-file) suggestions="";;
+        --debugger-port) suggestions="";;
+        --debugger-break-on-start) suggestions="";;
+        --log-components) suggestions="";;
+        --compiler-nullcheck) suggestions="";;
+        --reference-dump) suggestions="";;
+        --signal-catcher) suggestions="";;
+        --signal-handler) suggestions="";;
+        --sigquit-flag) suggestions="";;
+        --sigusr1-flag) suggestions="";;
+        --sigusr2-flag) suggestions="";;
+        --mobile-log-flag) suggestions="";;
+        --dfx-log) suggestions="";;
+        --gc-type) suggestions="";;
+        --ic-enable) suggestions="";;
+        --gc-trigger-type) suggestions="";;
+        --log-detailed-gc-info-enabled) suggestions="";;
+        --log-detailed-gc-compaction-info-enabled) suggestions="";;
+        --gc-trigger-percent-threshold) suggestions="";;
+        --gc-trigger-adaptive-multiplier) suggestions="";;
+        --max-trigger-percent) suggestions="";;
+        --skip-startup-gc-count) suggestions="";;
+        --gc-use-nth-alloc-trigger) suggestions="";;
+        --init-young-space-size) suggestions="";;
+        --young-space-size) suggestions="";;
+        --young-shared-space-size) suggestions="";;
+        --min-extra-heap-size) suggestions="";;
+        --max-extra-heap-size) suggestions="";;
+        --gc-debug-trigger-start) suggestions="";;
+        --gc-dump-heap) suggestions="";;
+        --gc-workers-count) suggestions="";;
+        --manage-gc-threads-affinity) suggestions="";;
+        --use-weak-cpu-for-gc-concurrent) suggestions="";;
+        --g1-region-garbage-rate-threshold) suggestions="";;
+        --g1-number-of-tenured-regions-at-mixed-collection) suggestions="";;
+        --g1-track-freed-objects) suggestions="";;
+        --gc-marking-stack-new-tasks-frequency) suggestions="";;
+        --gc-root-marking-stack-max-size) suggestions="";;
+        --gc-workers-marking-stack-max-size) suggestions="";;
+        --gc-parallel-marking-enabled) suggestions="";;
+        --gc-parallel-compacting-enabled) suggestions="";;
+        --gc-parallel-ref-updating-enabled) suggestions="";;
+        --g1-single-pass-compaction-enabled) suggestions="";;
+        --reference-processor-enable) suggestions="";;
+        --log-level) suggestions="";;
+        --log-stream) suggestions="";;
+        --log-file) suggestions="";;
+        --gc-enable-tracing) suggestions="";;
+        --g1-enable-concurrent-update-remset) suggestions="";;
+        --g1-min-concurrent-cards-to-process) suggestions="";;
+        --g1-hot-cards-processing-frequency) suggestions="";;
+        --g1-promotion-region-alive-rate) suggestions="";;
+        --g1-full-gc-region-fragmentation-rate) suggestions="";;
+        --g1-pause-time-goal) suggestions="--g1-pause-time-goal:gc-pause-interval --g1-pause-time-goal:max-gc-pause";;
+        --max-gc-pause) suggestions="";;
+        --gc-pause-interval) suggestions="";;
+        --distributed-profiling) suggestions="";;
+        --aot-file) suggestions="";;
+        --aot-files) suggestions="";;
+        --aot-verify-abs-path) suggestions="";;
+        --adaptive-tlab-size) suggestions="";;
+        --init-tlab-size) suggestions="";;
+        --max-tlab-size) suggestions="";;
+        --use-tlab-for-allocations) suggestions="";;
+        --init-heap-size-limit) suggestions="";;
+        --heap-size-limit) suggestions="";;
+        --internal-memory-size-limit) suggestions="";;
+        --frames-memory-size-limit) suggestions="";;
+        --min-heap-free-percentage) suggestions="";;
+        --max-heap-free-percentage) suggestions="";;
+        --code-cache-size-limit) suggestions="";;
+        --compiler-memory-size-limit) suggestions="";;
+        --print-memory-statistics) suggestions="";;
+        --print-gc-statistics) suggestions="";;
+        --no-async-jit) suggestions="";;
+        --compiler-queue-type) suggestions="";;
+        --compiler-task-life-span) suggestions="";;
+        --compiler-queue-max-length) suggestions="";;
+        --compiler-epoch-duration) suggestions="";;
+        --compiler-death-counter-value) suggestions="";;
+        --limit-standard-alloc) suggestions="";;
+        --internal-allocator-type) suggestions="";;
+        --finalizer-timeout-ms) suggestions="";;
+        --properties) suggestions="";;
+        --events-output) suggestions="";;
+        --events-file) suggestions="";;
+        --mem-alloc-dump-exec) suggestions="";;
+        --mem-alloc-dump-file) suggestions="";;
+        --startup-time) suggestions="";;
+        --max-free) suggestions="";;
+        --native-gc-trigger-type) suggestions="";;
+        --profiler-enabled) suggestions="";;
+        --profilesaver-sleeping-time-ms) suggestions="";;
+        --profilesaver-delta-number-threshold) suggestions="";;
+        --profilesaver-enabled) suggestions="";;
+        --incremental-profilesaver-enabled) suggestions="";;
+        --start-as-zygote) suggestions="";;
+        --verification-mode) suggestions="";;
+        --verification-update-cache) suggestions="";;
+        --verification-threads) suggestions="";;
+        --verification-config-file) suggestions="";;
+        --verification-cache-file) suggestions="";;
+        --enable-fast-heap-verifier) suggestions="";;
+        --heap-verifier) suggestions="";;
+        --max-global-ref-size) suggestions="";;
+        --global-reference-size-check-enabled) suggestions="";;
+        --concurrent-gc-enabled) suggestions="";;
+        --snapshot-serialize-enabled) suggestions="";;
+        --snapshot-deserialize-enabled) suggestions="";;
+        --snapshot-file) suggestions="";;
+        --framework-abc-file) suggestions="";;
+        --boot-an-location) suggestions="";;
+        --enable-an) suggestions="--enable-an:force";;
+        --force) suggestions="";;
+        --verify-call-stack) suggestions="";;
+        --safepoint-backtrace) suggestions="";;
+        --aot-string-gc-roots-limit) suggestions="";;
+        --resolve-string-aot-threshold) suggestions="";;
+        --icu-data-path) suggestions="";;
+        --ark-aot) suggestions="";;
+        --intrinsics-blacklist) suggestions="";;
+        --verify-entrypoints) suggestions="";;
+        --ignore-daemon-memory-leaks-threshold) suggestions="";;
+        --interpreter-type) suggestions="";;
+        --abc-layout-profile-location) suggestions="";;
+        --intrusive-test) suggestions="";;
+        --profile-output) suggestions="";;
+        --call-profiling-table-size) suggestions="";;
+        --coroutine-stack-size-pages) suggestions="";;
+        --coroutines-stack-mem-limit) suggestions="";;
+        --use-coroutine-pool) suggestions="";;
+        --workers-type) suggestions="";;
+        --taskmanager-workers-count) suggestions="";;
+        --task-stats-type) suggestions="";;
+        --load-in-boot) suggestions="";;
+        --use-string-caches) suggestions="";;
+        --fail-on-heap-verification) suggestions="";;
+        --pre-gc-heap-verify-enabled) suggestions="";;
+        --into-gc-heap-verify-enabled) suggestions="";;
+        --post-gc-heap-verify-enabled) suggestions="";;
+        --enable-paralled-young-gc) suggestions="";;
+        --coroutine-impl) suggestions="";;
+        --coroutine-workers-count) suggestions="";;
+        --coroutine-e-workers-limit) suggestions="";;
+        --coroutine-enable-features) suggestions="--coroutine-enable-features:ani-drain-queue --coroutine-enable-features:migrate-await --coroutine-enable-features:migration";;
+        --ani-drain-queue) suggestions="";;
+        --migration) suggestions="";;
+        --migrate-await) suggestions="";;
+        --coroutine-dump-stats) suggestions="";;
+        --taskpool-mode) suggestions="";;
+        --native-library-path) suggestions="";;
+        --list-unhandled-on-exit) suggestions="--list-unhandled-on-exit:jobs --list-unhandled-on-exit:promises";;
+        --promises) suggestions="";;
+        --jobs) suggestions="";;
+            *) suggestions="";;
+        esac
+        COMPREPLY=($(compgen -W "$suggestions" -- "$cur"))
         return 0
     fi
 
-    local opts=$(yq '.options[].name' "$yaml_file" | sed 's/^/--/')
-    COMPREPLY=($(compgen -W "${opts}" -- "$cur"))
+    # Main options
+    COMPREPLY=($(compgen -W "--runtime --boot-panda-files --panda-files --boot-intrinsic-spaces --boot-class-spaces --runtime-type --load-runtimes --runtime-compressed-strings-enabled --explicit-concurrent-gc-enabled --run-gc-in-place --full-gc-bombing-frequency --run-gc-every-safepoint --compiler-enable-jit --compiler-hotness-threshold --compiler-profiling-threshold --compiler-enable-osr --debugger-library-path --debugger-enable --sampling-profiler-create --sampling-profiler-startup-run --sampling-profiler-interval --sampling-profiler-output-file --debugger-port --debugger-break-on-start --log-components --compiler-nullcheck --reference-dump --signal-catcher --signal-handler --sigquit-flag --sigusr1-flag --sigusr2-flag --mobile-log-flag --dfx-log --gc-type --ic-enable --gc-trigger-type --log-detailed-gc-info-enabled --log-detailed-gc-compaction-info-enabled --gc-trigger-percent-threshold --gc-trigger-adaptive-multiplier --max-trigger-percent --skip-startup-gc-count --gc-use-nth-alloc-trigger --init-young-space-size --young-space-size --young-shared-space-size --min-extra-heap-size --max-extra-heap-size --gc-debug-trigger-start --gc-dump-heap --gc-workers-count --manage-gc-threads-affinity --use-weak-cpu-for-gc-concurrent --g1-region-garbage-rate-threshold --g1-number-of-tenured-regions-at-mixed-collection --g1-track-freed-objects --gc-marking-stack-new-tasks-frequency --gc-root-marking-stack-max-size --gc-workers-marking-stack-max-size --gc-parallel-marking-enabled --gc-parallel-compacting-enabled --gc-parallel-ref-updating-enabled --g1-single-pass-compaction-enabled --reference-processor-enable --log-level --log-stream --log-file --gc-enable-tracing --g1-enable-concurrent-update-remset --g1-min-concurrent-cards-to-process --g1-hot-cards-processing-frequency --g1-promotion-region-alive-rate --g1-full-gc-region-fragmentation-rate --g1-pause-time-goal --max-gc-pause --gc-pause-interval --distributed-profiling --aot-file --aot-files --aot-verify-abs-path --adaptive-tlab-size --init-tlab-size --max-tlab-size --use-tlab-for-allocations --init-heap-size-limit --heap-size-limit --internal-memory-size-limit --frames-memory-size-limit --min-heap-free-percentage --max-heap-free-percentage --code-cache-size-limit --compiler-memory-size-limit --print-memory-statistics --print-gc-statistics --no-async-jit --compiler-queue-type --compiler-task-life-span --compiler-queue-max-length --compiler-epoch-duration --compiler-death-counter-value --limit-standard-alloc --internal-allocator-type --finalizer-timeout-ms --properties --events-output --events-file --mem-alloc-dump-exec --mem-alloc-dump-file --startup-time --max-free --native-gc-trigger-type --profiler-enabled --profilesaver-sleeping-time-ms --profilesaver-delta-number-threshold --profilesaver-enabled --incremental-profilesaver-enabled --start-as-zygote --verification-mode --verification-update-cache --verification-threads --verification-config-file --verification-cache-file --enable-fast-heap-verifier --heap-verifier --max-global-ref-size --global-reference-size-check-enabled --concurrent-gc-enabled --snapshot-serialize-enabled --snapshot-deserialize-enabled --snapshot-file --framework-abc-file --boot-an-location --enable-an --force --verify-call-stack --safepoint-backtrace --aot-string-gc-roots-limit --resolve-string-aot-threshold --icu-data-path --ark-aot --intrinsics-blacklist --verify-entrypoints --ignore-daemon-memory-leaks-threshold --interpreter-type --abc-layout-profile-location --intrusive-test --profile-output --call-profiling-table-size --coroutine-stack-size-pages --coroutines-stack-mem-limit --use-coroutine-pool --workers-type --taskmanager-workers-count --task-stats-type --load-in-boot --use-string-caches --fail-on-heap-verification --pre-gc-heap-verify-enabled --into-gc-heap-verify-enabled --post-gc-heap-verify-enabled --enable-paralled-young-gc --coroutine-impl --coroutine-workers-count --coroutine-e-workers-limit --coroutine-enable-features --ani-drain-queue --migration --migrate-await --coroutine-dump-stats --taskpool-mode --native-library-path --list-unhandled-on-exit --promises --jobs" -- "$cur"))
+    return 0
 }
-
 complete -F _ark_completions ark

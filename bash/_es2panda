@@ -1,33 +1,82 @@
-#!/bin/bash
 _es2panda_completions() {
     COMP_WORDBREAKS=${COMP_WORDBREAKS//:/}
 
     local cur
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    local yaml_file="$HOME/arkcompiler/ets_frontend/ets2panda/util/options.yaml"
 
-    # If option is in :sub_option
+    # Completion for suboptions
     if [[ "$cur" == --*:* ]]; then
-        local mainopt="${cur%%:*}"
-        local partial_subopt="${cur#*:}"
-        local mainopt_clean="${mainopt#--}"
-
-        # sub_option'ları yaml'den çek
-        local subopts=$(yq ".options[] | select(.name == \"${mainopt_clean}\") | .sub_options[].name" "$yaml_file" 2>/dev/null)
-
-        local suggestions=()
-        for sub in $subopts; do
-            suggestions+=("${mainopt}:${sub}")
-        done
-
-        COMPREPLY=($(compgen -W "${suggestions[*]}" -- "$cur"))
+        local opt="${cur%%:*}"
+        local suggestions=""
+        case "$opt" in
+        --es2panda) suggestions="";;
+        --help) suggestions="";;
+        --arktsconfig) suggestions="";;
+        --extension) suggestions="";;
+        --module) suggestions="";;
+        --parse-only) suggestions="";;
+        --dump-ast) suggestions="";;
+        --dump-cfg) suggestions="";;
+        --dump-dynamic-ast) suggestions="";;
+        --dump-ast-only-silent) suggestions="";;
+        --list-files) suggestions="";;
+        --parse-jsdoc) suggestions="";;
+        --dump-assembly) suggestions="";;
+        --debug-info) suggestions="";;
+        --dump-debug-info) suggestions="";;
+        --opt-level) suggestions="";;
+        --ets-module) suggestions="";;
+        --eval-mode) suggestions="";;
+        --ets-warnings) suggestions="--ets-warnings:disable --ets-warnings:enable --ets-warnings:werror";;
+        --werror) suggestions="";;
+        --enable) suggestions="";;
+        --disable) suggestions="";;
+        --debugger-eval) suggestions="--debugger-eval:line --debugger-eval:panda-files --debugger-eval:source";;
+        --line) suggestions="";;
+        --source) suggestions="";;
+        --panda-files) suggestions="";;
+        --generate-decl) suggestions="--generate-decl:enabled --generate-decl:path";;
+        --enabled) suggestions="";;
+        --path) suggestions="";;
+        --emit-declaration) suggestions="";;
+        --thread) suggestions="";;
+        --dump-size-stat) suggestions="";;
+        --output) suggestions="";;
+        --log-level) suggestions="";;
+        --stdlib) suggestions="";;
+        --gen-stdlib) suggestions="";;
+        --plugins) suggestions="";;
+        --skip-phases) suggestions="";;
+        --ast-verifier) suggestions="--ast-verifier:errors --ast-verifier:full-program --ast-verifier:json --ast-verifier:json-path --ast-verifier:phases --ast-verifier:warnings";;
+        --warnings) suggestions="";;
+        --errors) suggestions="";;
+        --phases) suggestions="";;
+        --full-program) suggestions="";;
+        --json) suggestions="";;
+        --json-path) suggestions="";;
+        --list-phases) suggestions="";;
+        --ets-unnamed) suggestions="";;
+        --ets-path) suggestions="";;
+        --exit-before-phase) suggestions="";;
+        --exit-after-phase) suggestions="";;
+        --dump-before-phases) suggestions="";;
+        --dump-after-phases) suggestions="";;
+        --dump-ets-src-before-phases) suggestions="";;
+        --dump-ets-src-after-phases) suggestions="";;
+        --bco-optimizer) suggestions="";;
+        --bco-compiler) suggestions="";;
+        --perm-arena) suggestions="";;
+        --dump-perf-metrics) suggestions="";;
+        --simultaneous) suggestions="";;
+            *) suggestions="";;
+        esac
+        COMPREPLY=($(compgen -W "$suggestions" -- "$cur"))
         return 0
     fi
 
-    # Get main options
-    local opts=$(yq '.options[].name' "$yaml_file" | sed 's/^/--/')
-    COMPREPLY=($(compgen -W "${opts}" -- "$cur"))
+    # Main options
+    COMPREPLY=($(compgen -W "--es2panda --help --arktsconfig --extension --module --parse-only --dump-ast --dump-cfg --dump-dynamic-ast --dump-ast-only-silent --list-files --parse-jsdoc --dump-assembly --debug-info --dump-debug-info --opt-level --ets-module --eval-mode --ets-warnings --werror --enable --disable --debugger-eval --line --source --panda-files --generate-decl --enabled --path --emit-declaration --thread --dump-size-stat --output --log-level --stdlib --gen-stdlib --plugins --skip-phases --ast-verifier --warnings --errors --phases --full-program --json --json-path --list-phases --ets-unnamed --ets-path --exit-before-phase --exit-after-phase --dump-before-phases --dump-after-phases --dump-ets-src-before-phases --dump-ets-src-after-phases --bco-optimizer --bco-compiler --perm-arena --dump-perf-metrics --simultaneous" -- "$cur"))
+    return 0
 }
-
 complete -F _es2panda_completions es2panda

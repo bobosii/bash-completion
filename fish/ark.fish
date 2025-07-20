@@ -1,16 +1,194 @@
 function __ark_main_options
-    yq '.options[].name' ~/arkcompiler/build/runtime_options_gen.yaml | sed 's/^/--/'
+    echo --runtime
+    echo --boot-panda-files
+    echo --panda-files
+    echo --boot-intrinsic-spaces
+    echo --boot-class-spaces
+    echo --runtime-type
+    echo --load-runtimes
+    echo --runtime-compressed-strings-enabled
+    echo --explicit-concurrent-gc-enabled
+    echo --run-gc-in-place
+    echo --full-gc-bombing-frequency
+    echo --run-gc-every-safepoint
+    echo --compiler-enable-jit
+    echo --compiler-hotness-threshold
+    echo --compiler-profiling-threshold
+    echo --compiler-enable-osr
+    echo --debugger-library-path
+    echo --debugger-enable
+    echo --sampling-profiler-create
+    echo --sampling-profiler-startup-run
+    echo --sampling-profiler-interval
+    echo --sampling-profiler-output-file
+    echo --debugger-port
+    echo --debugger-break-on-start
+    echo --log-components
+    echo --compiler-nullcheck
+    echo --reference-dump
+    echo --signal-catcher
+    echo --signal-handler
+    echo --sigquit-flag
+    echo --sigusr1-flag
+    echo --sigusr2-flag
+    echo --mobile-log-flag
+    echo --dfx-log
+    echo --gc-type
+    echo --ic-enable
+    echo --gc-trigger-type
+    echo --log-detailed-gc-info-enabled
+    echo --log-detailed-gc-compaction-info-enabled
+    echo --gc-trigger-percent-threshold
+    echo --gc-trigger-adaptive-multiplier
+    echo --max-trigger-percent
+    echo --skip-startup-gc-count
+    echo --gc-use-nth-alloc-trigger
+    echo --init-young-space-size
+    echo --young-space-size
+    echo --young-shared-space-size
+    echo --min-extra-heap-size
+    echo --max-extra-heap-size
+    echo --gc-debug-trigger-start
+    echo --gc-dump-heap
+    echo --gc-workers-count
+    echo --manage-gc-threads-affinity
+    echo --use-weak-cpu-for-gc-concurrent
+    echo --g1-region-garbage-rate-threshold
+    echo --g1-number-of-tenured-regions-at-mixed-collection
+    echo --g1-track-freed-objects
+    echo --gc-marking-stack-new-tasks-frequency
+    echo --gc-root-marking-stack-max-size
+    echo --gc-workers-marking-stack-max-size
+    echo --gc-parallel-marking-enabled
+    echo --gc-parallel-compacting-enabled
+    echo --gc-parallel-ref-updating-enabled
+    echo --g1-single-pass-compaction-enabled
+    echo --reference-processor-enable
+    echo --log-level
+    echo --log-stream
+    echo --log-file
+    echo --gc-enable-tracing
+    echo --g1-enable-concurrent-update-remset
+    echo --g1-min-concurrent-cards-to-process
+    echo --g1-hot-cards-processing-frequency
+    echo --g1-promotion-region-alive-rate
+    echo --g1-full-gc-region-fragmentation-rate
+    echo --g1-pause-time-goal
+    echo --max-gc-pause
+    echo --gc-pause-interval
+    echo --distributed-profiling
+    echo --aot-file
+    echo --aot-files
+    echo --aot-verify-abs-path
+    echo --adaptive-tlab-size
+    echo --init-tlab-size
+    echo --max-tlab-size
+    echo --use-tlab-for-allocations
+    echo --init-heap-size-limit
+    echo --heap-size-limit
+    echo --internal-memory-size-limit
+    echo --frames-memory-size-limit
+    echo --min-heap-free-percentage
+    echo --max-heap-free-percentage
+    echo --code-cache-size-limit
+    echo --compiler-memory-size-limit
+    echo --print-memory-statistics
+    echo --print-gc-statistics
+    echo --no-async-jit
+    echo --compiler-queue-type
+    echo --compiler-task-life-span
+    echo --compiler-queue-max-length
+    echo --compiler-epoch-duration
+    echo --compiler-death-counter-value
+    echo --limit-standard-alloc
+    echo --internal-allocator-type
+    echo --finalizer-timeout-ms
+    echo --properties
+    echo --events-output
+    echo --events-file
+    echo --mem-alloc-dump-exec
+    echo --mem-alloc-dump-file
+    echo --startup-time
+    echo --max-free
+    echo --native-gc-trigger-type
+    echo --profiler-enabled
+    echo --profilesaver-sleeping-time-ms
+    echo --profilesaver-delta-number-threshold
+    echo --profilesaver-enabled
+    echo --incremental-profilesaver-enabled
+    echo --start-as-zygote
+    echo --verification-mode
+    echo --verification-update-cache
+    echo --verification-threads
+    echo --verification-config-file
+    echo --verification-cache-file
+    echo --enable-fast-heap-verifier
+    echo --heap-verifier
+    echo --max-global-ref-size
+    echo --global-reference-size-check-enabled
+    echo --concurrent-gc-enabled
+    echo --snapshot-serialize-enabled
+    echo --snapshot-deserialize-enabled
+    echo --snapshot-file
+    echo --framework-abc-file
+    echo --boot-an-location
+    echo --enable-an
+    echo --force
+    echo --verify-call-stack
+    echo --safepoint-backtrace
+    echo --aot-string-gc-roots-limit
+    echo --resolve-string-aot-threshold
+    echo --icu-data-path
+    echo --ark-aot
+    echo --intrinsics-blacklist
+    echo --verify-entrypoints
+    echo --ignore-daemon-memory-leaks-threshold
+    echo --interpreter-type
+    echo --abc-layout-profile-location
+    echo --intrusive-test
+    echo --profile-output
+    echo --call-profiling-table-size
+    echo --coroutine-stack-size-pages
+    echo --coroutines-stack-mem-limit
+    echo --use-coroutine-pool
+    echo --workers-type
+    echo --taskmanager-workers-count
+    echo --task-stats-type
+    echo --load-in-boot
+    echo --use-string-caches
+    echo --fail-on-heap-verification
+    echo --pre-gc-heap-verify-enabled
+    echo --into-gc-heap-verify-enabled
+    echo --post-gc-heap-verify-enabled
+    echo --enable-paralled-young-gc
+    echo --coroutine-impl
+    echo --coroutine-workers-count
+    echo --coroutine-e-workers-limit
+    echo --coroutine-enable-features
+    echo --ani-drain-queue
+    echo --migration
+    echo --migrate-await
+    echo --coroutine-dump-stats
+    echo --taskpool-mode
+    echo --native-library-path
+    echo --list-unhandled-on-exit
+    echo --promises
+    echo --jobs
 end
 
 function __ark_suboptions
     set -l cur (commandline -ct)
     set -l mainopt (string split ":" -- $cur)[1]
     set -l cleanopt (string replace -- -- "" $mainopt)
-
-    yq ".options[] | select(.name == \"$cleanopt\") | .sub_options[].name" ~/arkcompiler/build/runtime_options_gen.yaml 2>/dev/null | sed "s|^|$mainopt:|"
+    if test $cleanopt = 'g1-pause-time-goal'; echo --g1-pause-time-goal:gc-pause-interval; end
+    if test $cleanopt = 'g1-pause-time-goal'; echo --g1-pause-time-goal:max-gc-pause; end
+    if test $cleanopt = 'enable-an'; echo --enable-an:force; end
+    if test $cleanopt = 'coroutine-enable-features'; echo --coroutine-enable-features:ani-drain-queue; end
+    if test $cleanopt = 'coroutine-enable-features'; echo --coroutine-enable-features:migrate-await; end
+    if test $cleanopt = 'coroutine-enable-features'; echo --coroutine-enable-features:migration; end
+    if test $cleanopt = 'list-unhandled-on-exit'; echo --list-unhandled-on-exit:jobs; end
+    if test $cleanopt = 'list-unhandled-on-exit'; echo --list-unhandled-on-exit:promises; end
 end
 
 complete -c ark -f -n 'not string match -rq "^--.*:.*" -- (commandline -ct)' -a '(__ark_main_options)'
-
 complete -c ark -f -n 'string match -rq "^--.*:.*" -- (commandline -ct)' -a '(__ark_suboptions)'
-
