@@ -35,26 +35,6 @@ if ! command -v complete &> /dev/null; then
     fi
 fi
 
-# Check for yq
-if ! command -v yq &> /dev/null; then
-    echo "⚠️ 'yq' is required but not found."
-    read -rp "Do you want to install 'yq'? [y/n]: " INSTALL_YQ
-    if [[ "$INSTALL_YQ" == "y" || "$INSTALL_YQ" == "Y" ]]; then
-        if command -v snap &> /dev/null; then
-            echo "📦 Installing 'yq' via snap..."
-            sudo snap install yq
-        else
-            echo "📦 Installing 'yq' via apt..."
-            sudo apt update
-            sudo apt install -y yq
-        fi
-    else
-        echo "❌ 'yq' is required for completion scripts. Exiting."
-        exit 1
-    fi
-fi
-
-
 # Clone repo
 echo "📥 Cloning completion script from repository..."
 rm -rf "$CLONE_DIR"
@@ -97,23 +77,11 @@ esac
 
 ### -------- Install es2panda completion -------- ###
 if [ -f "$ES2PANDA_FILE" ]; then
-  YAML_PATH="$HOME/arkcompiler/ets_frontend/ets2panda/util/options.yaml"
-  if [ -f "$YAML_PATH" ]; then
-    sed -i "s|local yaml_file=.*|local yaml_file=\"$YAML_PATH\"|g" "$ES2PANDA_FILE"
-  else
-    echo "⚠️ Default es2panda options.yaml not found. Please update manually if needed."
-  fi
   sudo cp "$ES2PANDA_FILE" "$ES2PANDA_DEST"
 fi
 
 ### -------- Install ark completion -------- ###
 if [ -f "$ARK_FILE" ]; then
-  ARK_YAML="$HOME/arkcompiler/build/runtime_options_gen.yaml"
-  if [ -f "$ARK_YAML" ]; then
-    sed -i "s|local yaml_file=.*|local yaml_file=\"$ARK_YAML\"|g" "$ARK_FILE"
-  else
-    echo "⚠️ runtime_options_gen.yaml not found for ark. Please update manually if needed."
-  fi
   sudo cp "$ARK_FILE" "$ARK_DEST"
 fi
 
