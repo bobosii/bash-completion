@@ -1,5 +1,12 @@
 # es2panda Completion Scripts
 
+> **Note:**
+> These completion scripts are automatically generated using a custom Python script generator.
+> If you are interested in how they are created or want to review/contribute to the generator, please visit:
+> [https://github.com/bobosii/generate-script](https://github.com/bobosii/generate-script)
+
+---
+
 This repository provides advanced command-line completion scripts (Bash, Zsh, Fish) for the `es2panda`, `ark`, and `ark_disasm` commands.
 
 ---
