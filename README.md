@@ -1,191 +1,71 @@
-# Bash Completion Scripts
+# es2panda Completion Scripts
 
-This repository provides shell completion scripts for the following CLI tools used in the ArkCompiler project:
-
-* `es2panda`
-* `ark`
-* `ark_disasm`
-
-These completions offer:
-
-* Dynamic suggestions for main and sub-options using `yq` to parse `yaml` files.
-* Support for Bash, Zsh, and Fish shells.
-* Intelligent completion of file paths (e.g., for `--debug-file:<path>`).
-
-## 📊 Supported Shells
-
-* ✅ Bash
-* ✅ Zsh
-* ✅ Fish
+This repository provides advanced command-line completion scripts (Bash, Zsh, Fish) for the `es2panda`, `ark`, and `ark_disasm` commands.
 
 ---
 
-## ⚙️ Automatic Installation (Recommended)
+## 🚀 Installation
 
-First, clone this repository:
+1. **Clone this repository:**
+    ```bash
+    git clone https://github.com/bobosii/bash-completion.git
+    cd bash-completion
+    ```
 
-```bash
-git clone https://github.com/bobosii/bash-completion.git
-cd bash-completion
-```
+2. **Run the installer script:**
+    ```bash
+    chmod +x setup-completion.sh
+    ./setup-completion.sh
+    --------------------------
+        Or you can do this:
+        bash setup-completion.sh
+    ```
 
-Then run the provided installation script:
+    - The script will automatically detect your shell (`bash`, `zsh`, or `fish`).
+    - It will try to locate your `es2panda` binary or ask for its path.
+    - If `bash-completion` is missing, it will offer to install it (for Bash only).
+    - All completion scripts will be copied to the appropriate directories.
+    - Your `PATH` will be updated if needed.
 
-```bash
-chmod +x install.sh
-./install.sh
-```
-
-This will:
-
-* Detect your current shell.
-* Copy the appropriate completion files to standard system/user paths.
-* Patch hardcoded YAML paths based on your environment.
-* Add `es2panda` to your shell’s `PATH`.
-
-Once complete, restart your terminal or run the appropriate source command:
-
-* Bash: `source ~/.bashrc`
-* Zsh: `source ~/.zshrc`
-* Fish: `source ~/.config/fish/config.fish`
+3. **Restart your terminal** (or follow the instructions at the end of the script) to activate the completions.
 
 ---
 
-## 🛠️ Manual Installation
+## 🖐️ Manual Installation
 
-### ⚠️ Default assumptions
+If you prefer, you can manually copy the completion scripts:
 
-The script assumes that:
+- **Bash:**
+    ```bash
+    sudo cp bash/_es2panda /usr/share/bash-completion/completions/_es2panda
+    sudo cp bash/_ark /usr/share/bash-completion/completions/_ark
+    sudo cp bash/_ark_disasm /usr/share/bash-completion/completions/_ark_disasm
+    ```
 
-* Your ArkCompiler build is located in: `$HOME/arkcompiler/build/bin/es2panda`
-* Your YAML option files are at:
+- **Zsh:**
+    ```bash
+    sudo cp zsh/_es2panda /usr/share/zsh/functions/Completion/Unix/_es2panda
+    sudo cp zsh/_ark /usr/share/zsh/functions/Completion/Unix/_ark
+    sudo cp zsh/_ark_disasm /usr/share/zsh/functions/Completion/Unix/_ark_disasm
+    ```
 
-  * `$HOME/arkcompiler/ets_frontend/ets2panda/util/options.yaml` (for es2panda)
-  * `$HOME/arkcompiler/build/runtime_options_gen.yaml` (for ark)
+- **Fish:**
+    ```bash
+    mkdir -p ~/.config/fish/completions
+    cp fish/es2panda.fish ~/.config/fish/completions/es2panda.fish
+    cp fish/ark.fish ~/.config/fish/completions/ark.fish
+    cp fish/ark_disasm.fish ~/.config/fish/completions/ark_disasm.fish
+    ```
 
-If not, you'll need to manually edit the paths in the completion files.
-
----
-
-### 1. Bash
-
-1. Copy the completion script:
-
-```bash
-sudo cp bash/_es2panda /usr/share/bash-completion/completions/es2panda
-sudo cp bash/_ark /usr/share/bash-completion/completions/ark
-sudo cp bash/_ark_disasm /usr/share/bash-completion/completions/ark_disasm
-```
-
-2. Make sure `bash-completion` is installed:
-
-```bash
-sudo apt install bash-completion
-```
-
-3. Add this line to your `~/.bashrc` if `es2panda` is not already in `PATH`:
-
-```bash
-export PATH="$HOME/arkcompiler/build/bin:$PATH"
-```
-
-4. Reload your shell:
-
-```bash
-source ~/.bashrc
-```
+Don’t forget to add the directory containing `es2panda` to your `PATH` if it’s not already there.
 
 ---
 
-### 2. Zsh
+## 💡 Notes
 
-1. Copy the scripts:
-
-```bash
-sudo cp zsh/_es2panda /usr/share/zsh/functions/Completion/Unix/
-sudo cp zsh/_ark /usr/share/zsh/functions/Completion/Unix/
-sudo cp zsh/_ark_disasm /usr/share/zsh/functions/Completion/Unix/
-```
-
-2. Make sure you have this in your `~/.zshrc`:
-
-```zsh
-autoload -Uz compinit
-compinit
-```
-
-3. Add `es2panda` to your path if needed:
-
-```zsh
-export PATH="$HOME/arkcompiler/build/bin:$PATH"
-```
-
-4. Reload Zsh:
-
-```zsh
-source ~/.zshrc
-```
+- TAB completion will work for `es2panda`, `ark`, and `ark_disasm` after installation.
+- If you move the `es2panda` binary, re-run the installer or update your `PATH`.
+- Tested on Ubuntu and macOS. Paths may vary on other systems.
 
 ---
-
-### 3. Fish
-
-1. Copy the scripts:
-
-```bash
-mkdir -p ~/.config/fish/completions
-cp fish/es2panda.fish ~/.config/fish/completions/es2panda.fish
-cp fish/ark.fish ~/.config/fish/completions/ark.fish
-cp fish/ark_disasm.fish ~/.config/fish/completions/ark_disasm.fish
-```
-
-2. Add to your `config.fish`:
-
-```fish
-set -gx PATH $HOME/arkcompiler/build/bin $PATH
-```
-
-3. Reload Fish:
-
-```fish
-source ~/.config/fish/config.fish
-```
-
----
-
-## 🧰 Dependencies
-
-Make sure you have [`yq`](https://github.com/mikefarah/yq) installed, as the completions use it to dynamically parse YAML files.
-
-Install it via:
-
-```bash
-sudo snap install yq
-
----
-
-## 🥺 Testing Locally
-
-To test a completion script locally without installing globally, source it manually:
-(Before testing locally please give file extensions.)
-
-* For Bash:
-
-  ```bash
-  source bash/_es2panda
-  ```
-
-* For Zsh:
-
-  ```zsh
-  fpath=(./zsh $fpath)
-  autoload -Uz _es2panda
-  compinit
-  ```
-
-* For Fish:
-
-  ```fish
-  source fish/es2panda.fish
-  ```
 
