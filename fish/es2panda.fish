@@ -80,5 +80,5 @@ function __es2panda_suboptions
     if test $cleanopt = 'ast-verifier'; echo --ast-verifier:warnings; end
 end
 
-complete -c es2panda -f -n 'not string match -rq "^--.*:.*" -- (commandline -ct)' -a '(__es2panda_main_options)'
+complete -c es2panda -n 'string match -rq "^-" -- (commandline -ct) && not string match -rq "^--.*:.*" -- (commandline -ct)' -a '(__es2panda_main_options)'
 complete -c es2panda -f -n 'string match -rq "^--.*:.*" -- (commandline -ct)' -a '(__es2panda_suboptions)'

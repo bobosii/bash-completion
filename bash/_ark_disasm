@@ -9,7 +9,12 @@ _ark_disasm_completions()
 
     local opts="--help --verbose --quiet --skip-string-literals --debug --debug-file --version"
 
-    # debug-file: sonrası dosya tamamlama
+    # If not starting with '-', fallback to default file completion
+    if [[ -z "$cur" || ! "$cur" =~ ^- ]]; then
+        return 1
+    fi
+
+    # After the --debug-file completion
     if [[ "${cur}" == --debug-file:* ]]; then
         local suffix="${cur#--debug-file:}"
         COMPREPLY=( $(compgen -f -- "${suffix}") )

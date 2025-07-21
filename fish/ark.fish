@@ -190,5 +190,5 @@ function __ark_suboptions
     if test $cleanopt = 'list-unhandled-on-exit'; echo --list-unhandled-on-exit:promises; end
 end
 
-complete -c ark -f -n 'not string match -rq "^--.*:.*" -- (commandline -ct)' -a '(__ark_main_options)'
+complete -c ark -n 'string match -rq "^-" -- (commandline -ct) && not string match -rq "^--.*:.*" -- (commandline -ct)' -a '(__ark_main_options)'
 complete -c ark -f -n 'string match -rq "^--.*:.*" -- (commandline -ct)' -a '(__ark_suboptions)'

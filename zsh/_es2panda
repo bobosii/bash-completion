@@ -4,6 +4,12 @@ _es2panda() {
   local cur
   cur=${words[CURRENT]}
 
+  # If not starting with '-', fallback to default file completion
+  if [[ $cur != -* ]]; then
+    _files
+    return
+  fi
+
   if [[ $cur == --*: ]]; then
     local mainopt="${cur%%:*}"
     local subopts=()

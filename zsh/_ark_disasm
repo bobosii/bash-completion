@@ -8,6 +8,12 @@ _ark_disasm() {
 
   opts=(--help --verbose --quiet --skip-string-literals --debug --debug-file --version)
 
+  # If not starting with '-', fallback to default file completion
+  if [[ $cur != -* ]]; then
+    _files
+    return
+  fi
+
   if [[ "$cur" == --debug-file:* ]]; then
     local prefix="--debug-file:"
     local suffix="${cur#--debug-file:}"

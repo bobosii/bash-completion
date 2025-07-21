@@ -2,10 +2,14 @@ _es2panda_completions() {
     COMP_WORDBREAKS=${COMP_WORDBREAKS//:/}
 
     local cur
-    COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
 
-    # Completion for suboptions
+    # If not starting with '-', fallback to default file completion
+    if [[ -z "$cur" || ! "$cur" =~ ^- ]]; then
+        return 1
+    fi
+
+    # Suboption completion
     if [[ "$cur" == --*:* ]]; then
         local opt="${cur%%:*}"
         local suggestions=""
@@ -79,4 +83,4 @@ _es2panda_completions() {
     COMPREPLY=($(compgen -W "--es2panda --help --arktsconfig --extension --module --parse-only --dump-ast --dump-cfg --dump-dynamic-ast --dump-ast-only-silent --list-files --parse-jsdoc --dump-assembly --debug-info --dump-debug-info --opt-level --ets-module --eval-mode --ets-warnings --werror --enable --disable --debugger-eval --line --source --panda-files --generate-decl --enabled --path --emit-declaration --thread --dump-size-stat --output --log-level --stdlib --gen-stdlib --plugins --skip-phases --ast-verifier --warnings --errors --phases --full-program --json --json-path --list-phases --ets-unnamed --ets-path --exit-before-phase --exit-after-phase --dump-before-phases --dump-after-phases --dump-ets-src-before-phases --dump-ets-src-after-phases --bco-optimizer --bco-compiler --perm-arena --dump-perf-metrics --simultaneous" -- "$cur"))
     return 0
 }
-complete -F _es2panda_completions es2panda
+complete -o default -F _es2panda_completions es2panda
