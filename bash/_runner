@@ -1,0 +1,130 @@
+# bash completion for runner.sh
+
+_runner_completions()
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+
+    opts="
+        --test262 -t
+        --hermes
+        --ets-system-tests
+        --ets-func-tests
+        --ets-runtime
+        --ets-gc-stress
+        --ets-cts
+        --ets-es-checked
+        --ets-custom
+        --ets-ts-subset
+        --ets-sdk
+        --parser
+        --declgenparser
+        --astchecker
+        --srcdumper
+        --recheck
+        --force-generate
+        --compare-files
+        --compare-files-iterations
+        --config
+        --generate-config
+        --custom-suite
+        --custom-test-root
+        --custom-list-root
+        --custom-generator
+        --custom-generator-option
+        --build-dir
+        --test-root
+        --list-root
+        --ets-stdlib-root
+        --work-dir
+        --processes -j
+        --gc-type
+        --full-gc-bombing-frequency
+        --no-run-gc-in-place
+        --generate-only
+        --arm64-qemu
+        --arm32-qemu
+        --report-format
+        --detailed-report
+        --detailed-report-file
+        --spec-report
+        --spec-report-file
+        --spec-report-yaml
+        --spec-file
+        --show-progress
+        --verbose -v
+        --verbose-filter
+        --no-bco
+        --force-download
+        --no-js
+        --gdb-timeout
+        --handle-timeout
+        --custom-es2panda
+        --es2panda-timeout
+        --es2panda-opt-level
+        --es2panda-debug-info
+        --arktsconfig
+        --es2panda-args
+        --disable-verifier
+        --verifier-timeout
+        --verifier-config
+        --aot
+        --paoc-timeout
+        --aot-args
+        --quick -q
+        --ark-args
+        --timeout
+        --heap-verifier
+        --irtoc
+        --llvmirtoc
+        --interpreter-type
+        --jit
+        --jit-preheat-repeats
+        --time-report
+        --time-edges
+        --test-list
+        --test-file
+        --test-list-arch
+        --test-list-san
+        --test-list-os
+        --test-list-build
+        --skip-test-lists
+        --update-excluded
+        --update-expected
+        --use-llvm-cov
+        --use-lcov
+        --llvm-cov-exclude
+        --lcov-exclude
+        --profdata-files-dir
+        --coverage-html-report-dir
+        --coverage-per-binary
+        --gcov-tool
+        --declgen-ets2ts-cts
+        --declgen-ets2ts-func-tests
+        --declgen-ets2ts-runtime
+        --declgen-ets2ts-sdk
+        --declgen-ts2ets-cts
+        --declgen-ets2ets
+        --groups
+        --group-number
+        --chapter
+        --chapters-file
+        --filter -f
+    "
+
+
+    case "$prev" in
+        --config|--generate-config|--custom-suite|--custom-test-root|--custom-list-root|--custom-generator|--custom-generator-option|--build-dir|--test-root|--list-root|--ets-stdlib-root|--work-dir|--gc-type|--report-format|--detailed-report-file|--spec-report-file|--spec-report-yaml|--spec-file|--verbose|--verbose-filter|--gdb-timeout|--custom-es2panda|--es2panda-timeout|--es2panda-opt-level|--arktsconfig|--es2panda-args|--verifier-timeout|--verifier-config|--paoc-timeout|--aot-args|--ark-args|--timeout|--heap-verifier|--interpreter-type|--jit-preheat-repeats|--time-edges|--test-list|--test-file|--test-list-arch|--test-list-san|--test-list-os|--test-list-build|--llvm-cov-exclude|--lcov-exclude|--profdata-files-dir|--coverage-html-report-dir|--gcov-tool|--groups|--group-number|--chapter|--chapters-file|--filter)
+            return 0
+            ;;
+    esac
+
+
+    COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+    return 0
+}
+
+complete -F _runner_completions runner
