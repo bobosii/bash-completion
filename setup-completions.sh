@@ -49,6 +49,8 @@ case "$USER_SHELL" in
     ARK_DEST="/usr/share/bash-completion/completions/_ark"
     ARK_DISASM_FILE="$CLONE_DIR/bash/_ark_disasm"
     ARK_DISASM_DEST="/usr/share/bash-completion/completions/_ark_disasm"
+    RUNNER_FILE="$CLONE_DIR/bash/_runner"
+    RUNNER_DEST="/usr/share/bash-completion/completions/runner"
     ;;
   zsh)
     ES2PANDA_FILE="$CLONE_DIR/zsh/_es2panda"
@@ -57,6 +59,8 @@ case "$USER_SHELL" in
     ARK_DEST="/usr/share/zsh/functions/Completion/Unix/_ark"
     ARK_DISASM_FILE="$CLONE_DIR/zsh/_ark_disasm"
     ARK_DISASM_DEST="/usr/share/zsh/functions/Completion/Unix/_ark_disasm"
+    RUNNER_FILE="$CLONE_DIR/zsh/_runner"
+    RUNNER_DEST="/usr/share/zsh/functions/Completion/Unix/_runner"
     ;;
   fish)
     if [ ! -d "$HOME/.config/fish/completions" ]; then
@@ -68,6 +72,8 @@ case "$USER_SHELL" in
     ARK_DEST="$HOME/.config/fish/completions/ark.fish"
     ARK_DISASM_FILE="$CLONE_DIR/fish/ark_disasm.fish"
     ARK_DISASM_DEST="$HOME/.config/fish/completions/ark_disasm.fish"
+    RUNNER_FILE="$CLONE_DIR/fish/runner.fish"
+    RUNNER_DEST="$HOME/.config/fish/completions/runner.fish"
     ;;
   *)
     echo "❌ Unsupported shell: $USER_SHELL"
@@ -92,6 +98,13 @@ else
   echo "⚠️ ark_disasm completion script not found!"
 fi
 
+### -------- Install runner completion -------- ###
+if [ -f "$RUNNER_FILE" ]; then
+  sudo cp "$RUNNER_FILE" "$RUNNER_DEST"
+else
+  echo "⚠️ runner completion script not found!"
+fi
+
 ### -------- Add PATH if not exists -------- ###
 echo "🔧 Updating PATH..."
 EXPORT_LINE="export PATH=\"$ES2PANDA_PATH:\$PATH\""
@@ -112,7 +125,32 @@ else
     echo "ℹ️ PATH already set in $PROFILE"
 fi
 
+### -------- Add runner alias/function -------- ###
+case "$USER_SHELL" in
+    bash)
+        if ! grep -Fxq "alias runner='$HOME/arkcompiler/runtime_core/static_core/tests/tests-u-runner/runner.sh'" "$HOME/.bashrc"; then
+            echo "alias runner='$HOME/arkcompiler/runtime_core/static_core/tests/tests-u-runner/runner.sh'" >> "$HOME/.bashrc"
+            echo "✅ runner alias added to .bashrc"
+        else
+            echo "ℹ️ runner alias already exists in .bashrc"
+        fi
+        ;;
+    zsh)
+        if ! grep -Fxq "runner() {
+  \"\$HOME/arkcompiler/runtime_core/static_core/tests/tests-u-runner/runner.sh\" \"\$@\"
+}" "$HOME/.zshrc"; then
+            cat <<'EOF' >> "$HOME/.zshrc"
+runner() {
+  "$HOME/arkcompiler/runtime_core/static_core/tests/tests-u-runner/runner.sh" "$@"
+}
+EOF
+            echo "✅ runner function added to .zshrc"
+        else
+            echo "ℹ️ runner function already exists in .zshrc"
+        fi
+        ;;
+esac
+
 echo "✅ All completions installed!"
 echo "💡 Please restart your terminal or run:"
 echo "source $PROFILE"
-
