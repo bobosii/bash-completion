@@ -9,6 +9,7 @@ _runner_completions()
 
 
     opts="
+        --help
         --test262 -t
         --hermes
         --ets-system-tests
